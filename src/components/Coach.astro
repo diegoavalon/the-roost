@@ -1,0 +1,64 @@
+---
+import { Image } from "astro:assets";
+import coachAvalon from "../assets/images/coach-avalon.jpg";
+
+interface Props {
+  name?: string;
+  titles?: string[];
+  description?: string;
+}
+
+const {
+  name = "Diego Avalon",
+  titles = ["Head Coach"],
+  description = "The Roost is led by Coach Diego Avalon — a former Division I wrestler at Utah Valley University and Bronze-level USA Wrestling certified coach. He's a man of faith, a husband of 15+ years, a father of five, and a lifelong believer that every person has more in them than they think.",
+} = Astro.props;
+---
+
+<section class="bg-dark text-light pb-section px-container-m">
+  <div class="max-w-container mx-auto">
+    <!-- Top row: Image + Description -->
+    <div class="flex flex-wrap gap-8 lg:gap-16 items-start">
+      <!-- Description (top right) -->
+      <p class="text-4xl leading-tight max-w-sm m-0 pt-4 mb-8">
+        {description}
+      </p>
+    </div>
+
+    <!-- Bottom row: Titles + Name -->
+    <div class="flex flex-wrap items-end mt-8 gap-8">
+      <!-- Image -->
+      <div
+        class="relative transition-transform duration-300 ease-out hover:z-[2] hover:rotate-0 hover:scale-105"
+      >
+        <div
+          class="relative bg-white p-2 shadow-[0_4px_20px_rgba(0,0,0,0.1)] rounded-sm"
+        >
+          <Image
+            src={coachAvalon}
+            alt={`Portrait of ${name}`}
+            class="w-full h-auto rounded-lg object-cover"
+          />
+        </div>
+      </div>
+      <!-- Name (bottom right) -->
+      <h2
+        class="font-serif text-6xl lg:text-[6rem] leading-none tracking-tight m-0"
+      >
+        {
+          name
+            .split(" ")
+            .map((word, i) => <span class={i > 0 ? "block" : ""}>{word}</span>)
+        }
+      </h2>
+      <!-- Titles (bottom left) -->
+      <div class="flex flex-col gap-1">
+        {
+          titles.map((title) => (
+            <span class="font-serif italic text-xl lg:text-2xl">{title}</span>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

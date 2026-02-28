@@ -1,0 +1,62 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+interface Props {
+  poster: ImageMetadata;
+  videoWebm?: string;
+  videoMp4?: string;
+  playbackRate?: number;
+}
+
+const { poster, videoWebm, videoMp4, playbackRate = 0.75 } = Astro.props;
+
+const hasVideo = videoWebm || videoMp4;
+---
+
+<section class="relative w-full h-screen min-h-[600px] overflow-hidden bg-dark">
+  <!-- Video/Image Background -->
+  <div class="absolute inset-0 z-0">
+    {
+      hasVideo ? (
+        <video
+          id="hero-video"
+          class="w-full h-full object-cover"
+          autoplay
+          muted
+          loop
+          playsinline
+          poster={poster.src}
+          data-playback-rate={playbackRate}
+        >
+          {videoWebm && <source src={videoWebm} type="video/webm" />}
+          {videoMp4 && <source src={videoMp4} type="video/mp4" />}
+        </video>
+      ) : (
+        <Image src={poster} alt="" class="w-full h-full object-cover" />
+      )
+    }
+  </div>
+
+  <!-- Video Overlay -->
+  <div
+    class="absolute inset-0 z-1 bg-radial-[ellipse_at_center] from-transparent via-dark/30 to-dark/80"
+    aria-hidden="true"
+  >
+  </div>
+
+  <!-- Hero Content -->
+  <div
+    class="absolute inset-0 z-[5] flex items-end justify-center p-container-m pb-[calc(var(--spacing-container-m)+4em)]"
+  >
+    <slot />
+  </div>
+</section>
+
+<script>
+  const video = document.getElementById("hero-video") as HTMLVideoElement;
+  if (video) {
+    const rate = parseFloat(video.dataset.playbackRate || "0.75");
+    video.playbackRate = rate;
+  }
+</script>

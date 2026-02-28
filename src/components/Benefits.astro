@@ -1,0 +1,143 @@
+---
+interface Props {
+  headline?: string;
+  benefits?: Array<{
+    text: string;
+    color?: "orange" | "pink" | "green" | "maroon" | "blue" | "purple";
+  }>;
+}
+
+const defaultBenefits = [
+  {
+    text: "Discipline that carries into school, chores, and life",
+    color: "orange" as const,
+  },
+  {
+    text: "Confidence earned through hard work — not participation trophies",
+    color: "pink" as const,
+  },
+  {
+    text: "Physical fitness, coordination, and body awareness",
+    color: "green" as const,
+  },
+  {
+    text: "Mental toughness they'll use for the rest of their lives",
+    color: "maroon" as const,
+  },
+  {
+    text: "A team that holds them accountable and has their back",
+    color: "blue" as const,
+  },
+];
+
+const {
+  headline = "What Your Kid Walks Away With:",
+  benefits = defaultBenefits,
+} = Astro.props;
+
+const cardColors = {
+  orange: "bg-gradient-to-br from-orange to-[#ff8a65] text-white",
+  pink: "bg-gradient-to-br from-pink to-pastelpink text-maroonred",
+  green: "bg-green text-white",
+  maroon: "bg-maroonred text-white",
+  blue: "bg-gradient-to-br from-blue to-[#b8c9ff] text-darkblue",
+  purple: "bg-gradient-to-br from-[#9c7cf4] to-[#c9b8ff] text-white",
+};
+---
+
+<section class="grid grid-cols-2 bg-light min-h-screen max-md:grid-cols-1">
+  <!-- Sticky left column -->
+  <div class="sticky top-0 h-screen flex items-center justify-center p-container-m overflow-hidden max-md:relative max-md:h-auto max-md:min-h-[60vh] max-md:text-center">
+    <svg
+      class="absolute -left-[10%] top-[20%] w-[80%] h-auto pointer-events-none"
+      viewBox="0 0 200 200"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M100 0C40 10 0 50 0 100C0 150 40 190 100 200C160 190 200 150 200 100C200 50 160 10 100 0Z"
+        fill="var(--color-blue)"
+        opacity="0.5"></path>
+      <ellipse
+        cx="60"
+        cy="120"
+        rx="50"
+        ry="60"
+        fill="var(--color-blue)"
+        opacity="0.4"></ellipse>
+    </svg>
+
+    <div class="relative z-[1] max-md:flex max-md:flex-col max-md:items-center">
+      <h2 class="text-[clamp(2rem,5vw,3.5rem)] leading-tight mb-8">
+        <span class="display-bold">What Your Kid</span>
+        <br />
+        <span class="display-bold">Walks Away </span>
+        <span class="relative inline-block">
+          <span class="display-italic">With</span>
+          <svg
+            class="absolute -bottom-[0.05em] left-0 w-full h-[0.15em] text-dark opacity-40"
+            viewBox="0 0 100 8"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M0 4 Q25 0, 50 4 T100 4"
+              stroke="currentColor"
+              stroke-width="2"
+              fill="none"></path>
+          </svg>
+        </span>
+        <span class="display-bold">:</span>
+      </h2>
+
+      <!-- Decorative hand illustration -->
+      <svg
+        class="w-16 h-auto mt-4"
+        viewBox="0 0 80 100"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <ellipse cx="40" cy="60" rx="30" ry="35" fill="var(--color-pastelpink)"
+        ></ellipse>
+        <path
+          d="M35 75C35 75 30 55 32 45C34 35 38 30 40 30C42 30 44 35 44 45C44 35 46 28 50 28C54 28 56 35 54 50"
+          stroke="var(--color-maroonred)"
+          stroke-width="2"
+          stroke-linecap="round"
+          fill="none"></path>
+        <circle cx="40" cy="22" r="4" fill="var(--color-maroonred)"></circle>
+      </svg>
+
+      <!-- Curved arrow pointing right -->
+      <svg
+        class="w-20 h-auto mt-2 ml-12 max-md:hidden"
+        viewBox="0 0 100 60"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M10 10 Q50 50 90 30"
+          stroke="var(--color-dark)"
+          stroke-width="2"
+          fill="none"></path>
+        <path
+          d="M85 25 L92 32 L82 35"
+          stroke="var(--color-dark)"
+          stroke-width="2"></path>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Scrolling benefits -->
+  <div class="flex flex-col gap-8 py-section px-container-m max-md:py-12 max-md:px-container-s">
+    {
+      benefits.map((benefit, index) => (
+        <div class="min-h-[50vh] flex items-center max-md:min-h-0">
+          <div class={`p-8 rounded-lg w-full max-w-[28em] max-md:max-w-none ${cardColors[benefit.color || "orange"]}`}>
+            <span class="block text-5xl font-black opacity-30 leading-none mb-2">{index + 1}</span>
+            <p class="text-xl font-semibold leading-snug m-0">{benefit.text}</p>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>

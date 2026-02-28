@@ -1,0 +1,134 @@
+---
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  label?: string;
+  headline?: string;
+  items?: FAQItem[];
+}
+
+const defaultItems: FAQItem[] = [
+  {
+    question: "Does my kid need wrestling experience?",
+    answer:
+      "Not at all. Most of our wrestlers start with zero experience. We teach everything from the ground up.",
+  },
+  {
+    question: "What does it cost?",
+    answer:
+      "Nothing. The Roost is a 501(c)(3) nonprofit. Training is free for every athlete, every season. We believe cost should never keep a kid off the mat.",
+  },
+  {
+    question: "What does my kid need to bring?",
+    answer:
+      "Athletic clothes and shoes. That's it. Wrestling shoes are great if you have them, but not required. We'll provide everything else.",
+  },
+  {
+    question: "Is wrestling safe for young kids?",
+    answer:
+      "Yes. Our youngest group focuses on coordination, body control, and basic technique in a supervised, age-appropriate setting. Safety is always the priority.",
+  },
+  {
+    question: "I'm an adult — can I really just show up?",
+    answer:
+      "Absolutely. Our adult sessions welcome all fitness levels and experience levels. You'll get a real workout and learn real wrestling. No judgment.",
+  },
+];
+
+const {
+  label = "FAQ",
+  headline = "You ask,\nwe answer",
+  items = defaultItems,
+} = Astro.props;
+---
+
+<section
+  class="bg-dark text-light pb-section px-container-m max-sm:py-20 max-sm:px-container-s"
+>
+  <!-- Top border line -->
+  <div class="border-t border-light/20 mb-16 max-w-container mx-auto"></div>
+
+  <div
+    class="max-w-container mx-auto grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-12 lg:gap-20"
+  >
+    <!-- Left: Label + Headline -->
+    <div>
+      <span
+        class="inline-block text-xs uppercase tracking-widest py-1.5 px-3 border border-light/50 rounded-full mb-6"
+      >
+        {label}
+      </span>
+      <h2
+        class="display-bold text-[clamp(2.5rem,6vw,4rem)] leading-[1.1] m-0 whitespace-pre-line"
+      >
+        {headline}
+      </h2>
+    </div>
+
+    <!-- Right: Accordion items -->
+    <div class="flex flex-col gap-3">
+      {
+        items.map((item) => (
+          <details
+            class="faq-item bg-white text-dark rounded-lg overflow-hidden group"
+            name="faq"
+          >
+            <summary class="flex items-center justify-between gap-4 py-5 px-6 cursor-pointer list-none font-medium text-base max-sm:py-4 max-sm:px-5 [&::-webkit-details-marker]:hidden">
+              <span class="flex-1 text-xl">{item.question}</span>
+              <span
+                class="flex-shrink-0 w-5 h-5 flex items-center justify-center text-dark/60"
+                aria-hidden="true"
+              >
+                <svg
+                  class="w-full h-full"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                >
+                  <line
+                    x1="12"
+                    y1="5"
+                    x2="12"
+                    y2="19"
+                    class="icon-vertical origin-center transition-transform duration-200"
+                  />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </span>
+            </summary>
+            <div class="faq-answer px-6 pb-5 max-sm:px-5 max-sm:pb-4">
+              <p class="m-0 leading-relaxed">{item.answer}</p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Icon animation on open */
+  .faq-item[open] .icon-vertical {
+    transform: scaleY(0);
+  }
+
+  /* Answer fade-in animation */
+  .faq-answer {
+    animation: fadeIn 0.2s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-0.5em);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

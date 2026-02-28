@@ -1,0 +1,322 @@
+---
+import { Image } from "astro:assets";
+import { TRACKS, CONTACT } from "../constants/navigation";
+
+// Track images
+import matImg from "../assets/images/wrestling-1.jpg";
+import ironImg from "../assets/images/wrestling-2.jpg";
+import plateImg from "../assets/images/wrestling-3.jpg";
+import deskImg from "../assets/images/wrestling-4.jpg";
+
+interface Props {
+  contactHref?: string;
+}
+
+const { contactHref = CONTACT.whatsapp } = Astro.props;
+
+// Combine track data with images
+const trackImages = [matImg, ironImg, plateImg, deskImg];
+const tracks = TRACKS.map((track, i) => ({ ...track, image: trackImages[i] }));
+---
+
+<nav class="nav">
+  <!-- Programs dropdown -->
+  <div class="dropdown">
+    <button class="nav-link nav-link--work dropdown-trigger">
+      <span>Tracks</span>
+      <svg
+        class="dropdown-arrow"
+        width="12"
+        height="12"
+        viewBox="0 0 12 12"
+        fill="none"
+      >
+        <path
+          d="M3 4.5L6 7.5L9 4.5"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+      </svg>
+    </button>
+
+    <div class="dropdown-content">
+      <!-- Left: Track list -->
+      <div class="dropdown-list">
+        <span class="dropdown-label">Tracks</span>
+        {
+          tracks.map((track, index) => (
+            <a href={track.href} class="dropdown-item" data-index={index}>
+              {track.label}
+            </a>
+          ))
+        }
+      </div>
+
+      <!-- Right: Image preview -->
+      <div class="dropdown-preview">
+        {
+          tracks.map((track, index) => (
+            <div class="preview-image" data-preview={index}>
+              <Image
+                src={track.image}
+                alt={track.label}
+                class="preview-img"
+              />
+              <div class="preview-info">
+                <span class="preview-name">{track.label}</span>
+                <span class="preview-desc">{track.description}</span>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <a href="/" class="nav-logo text-light">
+    <svg
+      width="158"
+      height="68"
+      viewBox="0 0 158 68"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M95.9453 11.2208C95.6645 10.6336 94.6178 10.506 93.7499 10.9655C92.8819 11.3995 92.3713 12.293 92.6777 12.8801C92.984 13.4417 93.9541 13.4162 94.8476 12.9822C95.7155 12.5227 96.2516 11.8079 95.9453 11.2208ZM109.68 11.7569C109.884 12.4206 109.833 12.7014 109.297 13.5439C109.169 13.7226 108.914 14.08 108.633 14.4629C106.591 17.2455 103.451 19.7728 100.643 20.8705C99.213 21.4322 96.6346 21.8917 95.0008 21.8917C90.5588 21.8917 87.4954 19.5175 87.4954 15.5096C87.4954 12.5738 89.2313 9.61246 92.116 8.23392C93.469 7.57018 95.1284 7.23831 96.3538 7.23831C99.4938 7.23831 100.872 8.33604 100.872 10.1741C100.872 12.0121 99.3406 14.1565 96.4559 15.4585C95.8177 15.7393 94.8731 16.0457 94.1328 16.1222C93.4946 16.1988 93.1882 16.4286 93.1882 16.8626C93.1882 17.5774 94.5157 18.3687 96.3282 18.3687C100.617 18.3687 104.88 15.7648 107.484 12.1143C107.637 11.8845 108.148 11.1952 108.225 11.0676C108.429 10.7868 108.761 10.8634 108.965 10.9655C109.322 11.1442 109.578 11.425 109.68 11.7569Z"
+        fill="currentColor"></path>
+      <path
+        d="M91.6237 11.7313C91.8024 12.3185 91.7259 12.8035 91.2663 13.5183C88.3561 18.139 84.1439 22.2491 80.3912 22.2491C77.5065 22.2491 75.5663 20.7429 74.9791 17.3987C74.877 16.7604 74.5196 16.6839 73.8814 17.1689C72.9369 17.8837 71.5328 19.058 71.0222 19.8494C70.2053 21.1003 69.5926 21.8661 68.597 21.8661C66.9121 21.8661 65.891 20.7174 65.891 18.7517C65.891 18.3177 66.0442 17.271 66.1207 16.8626C67.2951 10.8889 69.1076 6.57456 72.0178 2.74528C73.8559 0.32007 75.6429 -0.420256 76.5364 0.217957C77.5065 0.907227 77.7618 2.33682 76.8427 3.20479C76.4598 3.58772 75.8726 4.14935 75.5918 4.55781C73.524 7.64676 71.9923 10.8634 71.5583 14.6926C71.4817 15.3564 71.737 15.5095 72.4008 14.7182C73.3453 13.5694 74.5962 12.3951 75.8982 11.4505C76.5364 10.991 77.1491 10.7357 77.8894 10.7357C78.834 10.7357 79.5743 11.7824 79.5743 13.4928C79.5743 16.1988 80.3912 17.5774 82.4845 17.5774C84.6034 17.5774 86.901 15.6117 89.2496 12.3695C89.5049 12.0121 90.0154 11.2973 90.1941 11.0421C90.3984 10.7612 90.7302 10.8378 90.9345 10.9399C91.2919 11.1186 91.5216 11.3994 91.6237 11.7313Z"
+        fill="currentColor"></path>
+      <path
+        d="M70.6361 11.7568C70.8403 12.3695 70.7892 12.8546 70.1255 13.7991C66.2962 19.3388 61.4203 22.0448 57.3612 22.0448C53.7872 22.0448 51.5663 20.1813 51.5663 17.705C51.5663 16.2243 52.0002 14.9479 52.8172 13.4673C53.5575 12.1142 53.5575 11.6547 52.1279 11.2973C50.7238 10.9399 51.5407 8.18285 52.7916 8.41261C53.7106 8.56578 54.8594 9.07635 55.804 7.87651C56.2124 7.34041 56.8507 6.14057 57.0038 5.88528C57.4378 5.17048 58.7908 4.53227 59.812 4.53227C61.2671 4.53227 61.6245 5.11943 61.4203 5.73211C61.2416 6.24268 60.7821 7.26382 60.4757 7.7744C60.1949 8.23391 60.4502 8.43814 60.8076 8.41261C61.8542 8.31049 62.6201 8.13179 63.437 7.87651C63.9731 7.69781 64.305 8.10627 64.3816 9.12741C64.4326 9.68904 64.356 10.1485 64.2284 10.4549C63.871 11.2973 63.1051 11.6547 62.1351 11.6547C61.165 11.6547 60.2204 11.0931 59.4035 11.0931C58.7908 11.0931 58.4845 11.2973 58.076 12.1398C57.157 14.0289 56.3401 15.918 56.3401 17.0157C56.3401 18.1134 57.0294 18.7517 58.1016 18.7517C61.216 18.7517 65.0964 16.6073 68.3896 12.2164C68.6448 11.859 69.0278 11.3229 69.2065 11.0676C69.4107 10.7868 69.7426 10.8633 69.9468 10.9655C70.3042 11.1442 70.5339 11.425 70.6361 11.7568Z"
+        fill="currentColor"></path>
+      <path
+        d="M157.814 40.4992C158.173 41.5776 158.083 42.4313 156.915 44.0939C150.175 53.8443 141.593 58.6072 134.448 58.6072C128.158 58.6072 124.249 55.3271 124.249 50.9686C124.249 48.3625 125.013 46.1158 126.45 43.5097C127.753 41.1283 127.753 40.3195 125.237 39.6904C122.766 39.0614 124.204 34.2086 126.405 34.613C128.023 34.8826 130.045 35.7813 131.708 33.6694C132.426 32.7258 133.55 30.614 133.819 30.1647C134.583 28.9065 136.965 27.7832 138.762 27.7832C141.323 27.7832 141.952 28.8167 141.593 29.8951C141.278 30.7937 140.469 32.591 139.93 33.4897C139.436 34.2985 139.885 34.658 140.514 34.613C142.357 34.4333 143.705 34.1188 145.142 33.6694C146.086 33.3549 146.67 34.0738 146.805 35.8711C146.895 36.8597 146.76 37.6685 146.535 38.2077C145.906 39.6904 144.558 40.3195 142.851 40.3195C141.143 40.3195 139.481 39.331 138.043 39.331C136.965 39.331 136.425 39.6904 135.707 41.1732C134.089 44.4983 132.651 47.8233 132.651 49.7554C132.651 51.6875 133.864 52.8108 135.751 52.8108C141.233 52.8108 148.063 49.0365 153.859 41.308C154.309 40.679 154.983 39.7354 155.297 39.286C155.657 38.7918 156.241 38.9266 156.6 39.1063C157.229 39.4208 157.634 39.9151 157.814 40.4992Z"
+        fill="currentColor"></path>
+      <path
+        d="M121.428 37.5337C118.912 37.8482 117.474 38.4773 115.811 39.3759C114.419 40.0948 114.014 41.5776 114.913 43.9141C116.216 47.329 118.418 50.8787 118.418 54.4734C118.418 59.7305 114.688 63.1904 108.802 63.1904C106.196 63.1904 104.309 62.786 102.646 61.9772C100.579 60.9886 99.5008 52.2717 104.354 55.1923C107.364 57.0345 109.79 56.4055 109.79 52.9007C109.79 50.5642 106.51 44.2736 106.51 41.1732C106.51 35.5566 113.026 32.1866 119.81 32.1866C123.136 32.1866 123.765 37.2641 121.428 37.5337Z"
+        fill="currentColor"></path>
+      <path
+        d="M86.6222 47.2841C87.7456 45.3071 87.6108 43.1054 86.3077 42.3415C85.0047 41.6226 83.0276 42.6111 81.9043 44.5881C80.781 46.5203 80.9158 48.722 82.2188 49.4858C83.5219 50.2497 85.4989 49.2162 86.6222 47.2841ZM110.571 37.9381C110.571 39.1513 108.37 41.1283 106.393 40.4094C104.64 39.7803 103.337 39.5107 101.405 39.5107C99.7426 39.5107 97.7207 40.0948 96.148 41.2182C94.8899 42.1168 94.2608 43.375 94.2608 45.0375C94.2608 52.1818 89.2283 58.1129 81.41 58.1129C76.2877 58.1129 72.019 53.8443 72.019 49.3061C72.019 42.7459 77.1863 33.6245 87.2064 33.6245C91.2054 33.6245 91.8794 34.9725 94.5304 34.9725C96.5973 34.9725 99.2034 34.2985 102.259 34.2985C104.82 34.2985 107.336 34.8826 108.999 35.6465C110.571 36.4104 110.571 36.9945 110.571 37.9381Z"
+        fill="currentColor"></path>
+      <path
+        d="M55.9502 47.2841C57.0736 45.3071 56.9388 43.1054 55.6357 42.3415C54.3327 41.6226 52.3556 42.6111 51.2323 44.5881C50.109 46.5203 50.2438 48.722 51.5468 49.4858C52.8499 50.2497 54.8269 49.2162 55.9502 47.2841ZM79.8995 37.9381C79.8995 39.1513 77.6978 41.1283 75.7207 40.4094C73.9683 39.7803 72.6653 39.5107 70.7332 39.5107C69.0707 39.5107 67.0487 40.0948 65.476 41.2182C64.2179 42.1168 63.5888 43.375 63.5888 45.0375C63.5888 52.1818 58.5563 58.1129 50.738 58.1129C45.6157 58.1129 41.347 53.8443 41.347 49.3061C41.347 42.7459 46.5143 33.6245 56.5344 33.6245C60.5334 33.6245 61.2074 34.9725 63.8584 34.9725C65.9253 34.9725 68.5315 34.2985 71.5869 34.2985C74.1481 34.2985 76.6643 34.8826 78.3268 35.6465C79.8995 36.4104 79.8995 36.9945 79.8995 37.9381Z"
+        fill="currentColor"></path>
+      <path
+        d="M32.5764 31.288C32.5764 30.3444 31.8574 30.0299 30.824 30.0299C27.454 30.0299 21.5229 32.636 21.5229 35.8262C21.5229 37.0394 22.6013 38.0728 24.2188 38.0728C26.9597 38.0728 32.5764 34.4333 32.5764 31.288ZM41.7876 29.1312C41.7876 34.6579 37.1146 40.7239 30.2848 42.5661C27.9483 43.1952 27.8584 44.0489 28.2179 44.7678C29.9703 48.2726 32.9358 51.2831 36.5305 53.1254C40.4396 55.1473 33.8345 61.9771 28.802 59.416C24.5334 57.2592 20.6242 50.2946 17.7485 46.026C16.6252 44.4084 16.2657 45.0374 14.738 47.5986C12.1768 51.8672 12.2667 52.1818 10.6042 56.6751C9.70551 59.1014 10.1548 61.7075 10.1548 62.7859C10.1548 65.6167 7.90819 67.9083 5.03249 67.9083C1.66252 67.9083 0 65.1224 0 62.4265C0 61.2133 0.808792 58.5622 1.52772 57.1693C6.78487 47.1942 9.25618 39.4208 13.3451 32.4562C17.9732 24.6379 27.8584 22.1666 33.1605 22.1666C37.6538 22.1666 41.7876 24.0088 41.7876 29.1312Z"
+        fill="currentColor"></path>
+    </svg>
+  </a>
+
+  <a href={contactHref} class="nav-link nav-link--social" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+      <path
+        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+      ></path>
+    </svg>
+  </a>
+</nav>
+
+<style>
+  .nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: var(--spacing-container-m);
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--text-xl);
+    color: var(--color-light);
+    text-decoration: none;
+    transition: opacity 0.3s;
+  }
+
+  .nav-link:hover {
+    opacity: 0.8;
+  }
+
+  .nav-logo {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--text-xl);
+    color: var(--color-light);
+    text-decoration: none;
+    letter-spacing: var(--tracking-display);
+  }
+
+  .nav-icon {
+    width: 1.5em;
+    height: 1.5em;
+  }
+
+  /* Dropdown */
+  .dropdown {
+    position: relative;
+  }
+
+  .dropdown-trigger {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .dropdown-arrow {
+    transition: transform 0.2s ease;
+  }
+
+  .dropdown:hover .dropdown-arrow {
+    transform: rotate(180deg);
+  }
+
+  .dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0.75rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    background: var(--color-light);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    min-width: 32rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-0.5rem);
+    transition:
+      opacity 0.2s ease,
+      visibility 0.2s ease,
+      transform 0.2s ease;
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  }
+
+  .dropdown:hover .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .dropdown-label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-orange);
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+
+  .dropdown-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dropdown-item {
+    font-family: var(--font-sans);
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--color-dark);
+    text-decoration: none;
+    padding: 0.5rem 0;
+    transition: color 0.2s ease;
+  }
+
+  .dropdown-item:hover {
+    color: var(--color-orange);
+  }
+
+  /* Preview panel */
+  .dropdown-preview {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    min-height: 12rem;
+  }
+
+  .preview-image {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .preview-image:first-child,
+  .preview-image.active {
+    opacity: 1;
+  }
+
+  .preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .preview-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    color: var(--color-light);
+  }
+
+  .preview-name {
+    display: block;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .preview-desc {
+    display: block;
+    font-size: 0.875rem;
+    opacity: 0.8;
+  }
+
+  /* Mobile: hide dropdown, show simple link */
+  @media (max-width: 767px) {
+    .dropdown-content {
+      display: none;
+    }
+
+    .dropdown-arrow {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const dropdownItems = document.querySelectorAll(".dropdown-item");
+  const previewImages = document.querySelectorAll(".preview-image");
+
+  dropdownItems.forEach((item) => {
+    item.addEventListener("mouseenter", () => {
+      const index = item.getAttribute("data-index");
+
+      // Remove active from all
+      previewImages.forEach((img) => img.classList.remove("active"));
+
+      // Add active to matching preview
+      const target = document.querySelector(`[data-preview="${index}"]`);
+      if (target) {
+        target.classList.add("active");
+      }
+    });
+  });
+</script>

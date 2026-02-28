@@ -1,0 +1,86 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  headline?: string;
+  description?: string;
+  buttonText?: string;
+  buttonHref?: string;
+  backgroundImage?: ImageMetadata;
+}
+
+const {
+  headline = "Ready to Step on the Mat?",
+  description = "Signing up takes 30 seconds. Just tell us your name, your wrestler's age, and which program you're interested in. We'll handle the rest.",
+  buttonText = "Contact Us to Register",
+  buttonHref = "#contact",
+  backgroundImage,
+} = Astro.props;
+---
+
+<section
+  class="relative min-h-[60vh] flex items-center justify-center py-section px-container-m overflow-hidden max-sm:min-h-[50vh] max-sm:py-20 max-sm:px-container-s"
+>
+  <!-- Background -->
+  <div class="absolute inset-0 z-0">
+    {
+      backgroundImage ? (
+        <Image
+          src={backgroundImage}
+          alt="wrestling gym image during the evening"
+          class="w-full h-full object-cover"
+          loading="lazy"
+        />
+      ) : (
+        <div class="w-full h-full bg-gradient-to-br from-darkgrey via-[#1a1a1a] to-dark" />
+      )
+    }
+    <div class="absolute inset-0 bg-black/50"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="relative z-[1] text-center max-w-[40em] text-light">
+    <h2 class="display-bold text-[clamp(2rem,7vw,4rem)] leading-tight m-0 mb-6">
+      {headline}
+    </h2>
+    {
+      description && (
+        <p class="text-lg leading-relaxed opacity-90 m-0 mb-8 max-sm:text-base">
+          {description}
+        </p>
+      )
+    }
+    <a
+      href={buttonHref}
+      class="cta-button inline-flex items-center gap-2 py-4 px-6 bg-light text-dark text-sm font-bold uppercase tracking-wider no-underline rounded-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_20px_rgba(0,0,0,0.3)] active:translate-y-0 max-sm:py-3 max-sm:px-5"
+    >
+      <span>{buttonText}</span>
+      <svg
+        class="w-5 h-5 transition-transform duration-200"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M5 12h14M12 5l7 7-7 7"></path>
+      </svg>
+    </a>
+  </div>
+</section>
+
+<style>
+  /* Decorative accent dot on button */
+  .cta-button::before {
+    content: "";
+    width: 0.5em;
+    height: 0.5em;
+    background: var(--color-orange);
+    border-radius: 50%;
+    margin-right: 0.25em;
+  }
+
+  .cta-button:hover svg {
+    transform: translateX(4px);
+  }
+</style>

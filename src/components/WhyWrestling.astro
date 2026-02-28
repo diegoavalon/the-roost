@@ -1,0 +1,174 @@
+---
+import { Image } from "astro:assets";
+
+import Wrestling1 from "../assets/images/wrestling-1.jpg";
+import Wrestling2 from "../assets/images/wrestling-2.jpg";
+import Wrestling3 from "../assets/images/wrestling-3.jpg";
+import Wrestling4 from "../assets/images/wrestling-4.jpg";
+
+interface Props {
+  images?: Array<{
+    src: typeof Wrestling1;
+    alt: string;
+    caption?: string;
+    captionColor?: "pink" | "yellow" | "green";
+  }>;
+}
+
+const defaultImages = [
+  {
+    src: Wrestling1,
+    alt: "Wrestling training",
+    caption: "no shortcuts here",
+    captionColor: "pink" as const,
+  },
+  {
+    src: Wrestling2,
+    alt: "Young wrestlers",
+    caption: "building grit daily",
+    captionColor: "yellow" as const,
+  },
+  {
+    src: Wrestling3,
+    alt: "Coach and athlete",
+    captionColor: "green" as const,
+  },
+  {
+    src: Wrestling4,
+    alt: "Team practice",
+    caption: "earned not given",
+    captionColor: "pink" as const,
+  },
+];
+
+const { images = defaultImages } = Astro.props;
+
+const captionColors = {
+  pink: "bg-pastelpink border-2 border-pink text-maroonred",
+  yellow: "bg-[#fffde7] border-2 border-[#f5e050] text-[#6d5d00]",
+  green: "bg-lightgreen border-2 border-green text-green",
+};
+---
+
+<section class="relative py-section px-container-m overflow-hidden bg-black text-light max-sm:py-20 max-sm:px-container-s">
+  <!-- Decorative blob -->
+  <svg
+    class="absolute pointer-events-none -left-[5%] top-[30%] w-60 h-auto max-sm:w-40 max-sm:-left-[15%]"
+    viewBox="0 0 200 300"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M50 0C20 40 0 100 10 160C20 220 60 260 100 280C140 300 180 280 190 240C200 200 180 140 160 100C140 60 100 20 50 0Z"
+      fill="var(--color-blue)"
+      opacity="0.6"></path>
+  </svg>
+
+  <div class="relative z-[1] max-w-[--container-md] mx-auto">
+    <!-- Headline -->
+    <h2 class="flex flex-wrap justify-center items-baseline gap-x-[0.15em] text-center text-[clamp(2.5rem,10vw,6rem)] max-sm:text-[clamp(2rem,12vw,3rem)] mb-2">
+      <span class="display-bold">Why Wrestling?</span>
+    </h2>
+
+    <div class="max-w-[38em] mx-auto text-center text-lg [&_p]:mb-4 [&_p:last-child]:mb-0">
+      <p>
+        You already know something's off. Too much time indoors. Not enough
+        grit. A world that tells kids they can opt out when things get hard.
+      </p>
+      <p class="font-black mb-6 text-2xl py-6">Wrestling fixes that.</p>
+    </div>
+
+    <!-- Photo collage -->
+    <div class="photo-collage grid grid-cols-4 gap-4 my-16 px-8 max-lg:grid-cols-2 max-lg:max-w-[32em] max-lg:mx-auto max-sm:grid-cols-1 max-sm:max-w-[18em] max-sm:gap-8">
+      {
+        images.map((image, index) => (
+          <div class={`photo-card photo-card--${index + 1} relative transition-transform duration-300 ease-out hover:z-[2] hover:rotate-0 hover:scale-105`}>
+            <div class="relative bg-white p-2 shadow-[0_4px_20px_rgba(0,0,0,0.1)] rounded-sm">
+              <Image src={image.src} alt={image.alt} />
+              {image.caption && (
+                <span
+                  class={`absolute px-3 py-1.5 text-sm font-medium rounded-sm whitespace-nowrap shadow-[0_2px_8px_rgba(0,0,0,0.1)] ${captionColors[image.captionColor || "pink"]} photo-caption photo-caption--${index + 1}`}
+                >
+                  {image.caption}
+                </span>
+              )}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Body text -->
+    <div class="max-w-[38em] mx-auto text-center text-lg [&_p]:mb-4 [&_p:last-child]:mb-0">
+      <p>
+        It's the oldest sport on earth — and the most honest one. There's no
+        hiding on a team. No bench. No luck. Just your kid, their opponent, and
+        the work they put in. Every win is earned. Every loss teaches something
+        real.
+      </p>
+      <p>
+        Wrestlers learn to get back up. To shake hands with someone who just
+        beat them. To push past the voice that says quit. These aren't lessons
+        you can teach from a couch.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Card rotations and caption positions - these require specific transforms */
+  .photo-card--1 {
+    transform: rotate(-6deg);
+    margin-top: 2em;
+  }
+  .photo-card--1 .photo-caption {
+    top: 15%;
+    right: -10%;
+  }
+
+  .photo-card--2 {
+    transform: rotate(3deg);
+    margin-top: -1em;
+  }
+  .photo-card--2 .photo-caption {
+    bottom: 20%;
+    left: -5%;
+  }
+
+  .photo-card--3 {
+    transform: rotate(-2deg);
+    margin-top: 3em;
+  }
+
+  .photo-card--4 {
+    transform: rotate(5deg);
+    margin-top: 0;
+  }
+  .photo-card--4 .photo-caption {
+    top: 25%;
+    right: -15%;
+  }
+
+  /* Responsive overrides */
+  @media (max-width: 992px) {
+    .photo-card--3 {
+      margin-top: 0;
+    }
+    .photo-card--4 {
+      margin-top: 2em;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .photo-card {
+      transform: none !important;
+      margin-top: 0 !important;
+    }
+    .photo-card:nth-child(odd) {
+      transform: rotate(-3deg) !important;
+    }
+    .photo-card:nth-child(even) {
+      transform: rotate(3deg) !important;
+    }
+  }
+</style>

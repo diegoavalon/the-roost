@@ -1,0 +1,176 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import littleRoostersImg from "../assets/images/programs__little-roosters.jpg";
+import varsityImg from "../assets/images/programs__varsity.jpg";
+import adultsImg from "../assets/images/programs__adult.jpg";
+
+interface Program {
+  name: string;
+  ageRange: string;
+  description: string;
+  image?: ImageMetadata;
+  color?: "orange" | "green" | "blue" | "maroon";
+}
+
+interface Props {
+  programs?: Program[];
+  footerNote?: string;
+}
+
+const defaultPrograms: Program[] = [
+  {
+    name: "Little Roosters",
+    ageRange: "Ages 5–12",
+    description:
+      "Where it starts. We build coordination, basic wrestling skills, and a love for the sport in a fun, structured environment. Your kid will learn to listen, try hard, and never give up — all while having a blast with their teammates.",
+    color: "orange",
+    image: littleRoostersImg,
+  },
+  {
+    name: "Varsity Prep",
+    ageRange: "Ages 13–18",
+    description:
+      "Serious training for serious competitors. We develop technique, conditioning, and the mental game that separates good wrestlers from great ones. Whether your teen is preparing for high school competition or starting from scratch, they'll get coaching that meets them where they are.",
+    color: "green",
+    image: varsityImg,
+  },
+  {
+    name: "Open Mat",
+    ageRange: "Adults 18+",
+    description:
+      "Wrestling isn't just for kids. Whether you competed in school and miss it, or you've never stepped on a mat, this is your chance. Great conditioning, real technique, and a room full of people who won't let you take it easy.",
+    color: "blue",
+    image: adultsImg,
+  },
+];
+
+const {
+  programs = defaultPrograms,
+  footerNote = "All programs are completely free.",
+} = Astro.props;
+
+const placeholderColors = {
+  orange: "bg-gradient-to-br from-orange to-[#ff8a65] text-white",
+  green: "bg-green text-white",
+  blue: "bg-gradient-to-br from-darkblue to-blue text-white",
+  maroon: "bg-maroonred text-white",
+};
+---
+
+<section class="bg-dark text-light py-section overflow-hidden max-sm:py-20">
+  <!-- Header -->
+  <div
+    class="flex justify-between items-end px-container-m mb-12 max-md:flex-col max-md:items-start max-md:gap-4 max-sm:px-container-s"
+  >
+    <h2 class="display-bold text-[clamp(2.5rem,8vw,5rem)] leading-none m-0">
+      Programs
+    </h2>
+    <div class="flex items-center gap-4">
+      <span class="text-sm opacity-80">All programs</span>
+      <button
+        class="nav-btn w-10 h-10 rounded-full border border-white/30 bg-transparent text-light cursor-pointer flex items-center justify-center transition-colors hover:bg-white/10 hover:border-white/50"
+        aria-label="Previous"
+        data-dir="prev"
+      >
+        <svg
+          class="w-5 h-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M15 18l-6-6 6-6"></path>
+        </svg>
+      </button>
+      <button
+        class="nav-btn w-10 h-10 rounded-full border border-white/30 bg-transparent text-light cursor-pointer flex items-center justify-center transition-colors hover:bg-white/10 hover:border-white/50"
+        aria-label="Next"
+        data-dir="next"
+      >
+        <svg
+          class="w-5 h-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M9 18l6-6-6-6"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Cards carousel -->
+  <div class="relative px-container-m max-sm:px-container-s">
+    <div
+      class="programs-track flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+    >
+      {
+        programs.map((program) => (
+          <article class="flex-none w-[min(85vw,50em)] grid grid-cols-[1fr_1.5fr] bg-light text-dark rounded-lg overflow-hidden snap-start max-md:w-[90vw] max-md:grid-cols-1 max-sm:w-[85vw]">
+            <div class="relative min-h-80 max-md:min-h-48">
+              <div
+                class={`absolute inset-0 ${placeholderColors[program.color || "orange"]}`}
+              >
+                <Image
+                  src={program.image}
+                  alt={`${program.name} practice image of two wrestlers ages ${program.ageRange}`}
+                  class="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+            <div class="p-8 flex flex-col justify-center max-md:p-6">
+              <span class="text-xs uppercase tracking-widest opacity-60 mb-2">
+                {program.ageRange}
+              </span>
+              <h3 class="text-[clamp(1.5rem,4vw,2.25rem)] font-black leading-tight m-0 mb-4">
+                {program.name}
+              </h3>
+              <p class="text-base leading-relaxed m-0 opacity-85">
+                {program.description}
+              </p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Footer note -->
+  {
+    footerNote && (
+      <p class="flex items-center justify-center gap-2 mt-12 text-lg font-semibold text-lightgreen">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+        </svg>
+        {footerNote}
+      </p>
+    )
+  }
+</section>
+
+<script>
+  const track = document.querySelector(".programs-track") as HTMLElement;
+  const prevBtn = document.querySelector(
+    '.nav-btn[data-dir="prev"]',
+  ) as HTMLButtonElement;
+  const nextBtn = document.querySelector(
+    '.nav-btn[data-dir="next"]',
+  ) as HTMLButtonElement;
+
+  if (track && prevBtn && nextBtn) {
+    const scrollAmount = () => {
+      const card = track.querySelector("article") as HTMLElement;
+      return card ? card.offsetWidth + 24 : 400;
+    };
+
+    prevBtn.addEventListener("click", () => {
+      track.scrollBy({ left: -scrollAmount(), behavior: "smooth" });
+    });
+
+    nextBtn.addEventListener("click", () => {
+      track.scrollBy({ left: scrollAmount(), behavior: "smooth" });
+    });
+  }
+</script>

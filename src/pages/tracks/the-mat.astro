@@ -1,0 +1,55 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Hero from "../../components/Hero.astro";
+import Intro from "../../components/Intro.astro";
+import WhyWrestling from "../../components/WhyWrestling.astro";
+import Benefits from "../../components/Benefits.astro";
+import Programs from "../../components/Programs.astro";
+import Coach from "../../components/Coach.astro";
+import FAQ from "../../components/FAQ.astro";
+import CTA from "../../components/CTA.astro";
+
+import ctaBackgroundImage from "../../assets/images/cta-wrestling-mat.png";
+import heroPosterImg from "../../assets/videos/hero-poster.jpg";
+import heroVideoMp4 from "../../assets/videos/hero-optimized.mp4";
+import heroVideoWebm from "../../assets/videos/hero-optimized.webm";
+---
+
+<Layout
+  title="The Roost — A community development program in Donley County, TX"
+>
+  <Hero
+    poster={heroPosterImg}
+    videoWebm={heroVideoWebm}
+    videoMp4={heroVideoMp4}
+  >
+    <h1 class="flex flex-col items-center text-center display m-0 text-light">
+      <div>
+        <span class="display-bold">Your kid doesn't need</span>
+        <br />
+        <span class="relative inline-block">
+          <span class="display-italic">another screen</span>
+          <svg
+            class="absolute -bottom-[0.1em] left-0 w-full h-[0.15em] text-light opacity-60"
+            viewBox="0 0 400 20"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M0 10 Q50 0, 100 10 T200 10 T300 10 T400 10"
+              stroke="currentColor"
+              stroke-width="2"
+              fill="none"></path>
+          </svg>
+        </span>
+        <span class="display-bold">.</span>
+      </div>
+    </h1>
+  </Hero>
+  <Intro />
+  <WhyWrestling />
+  <Benefits />
+  <Programs />
+  <FAQ />
+  <Coach />
+  <CTA backgroundImage={ctaBackgroundImage} />
+</Layout>

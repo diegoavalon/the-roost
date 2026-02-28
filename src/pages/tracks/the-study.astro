@@ -1,0 +1,19 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Hero from "../../components/Hero.astro";
+
+import theStudyImg from "../../assets/images/the-books.png";
+---
+
+<Layout
+  title="The Roost — A community development program in Donley County, TX"
+  bodyClass="overflow-hidden"
+>
+  <Hero poster={theStudyImg}>
+    <h1 class="flex items-center text-center display m-0 text-light">
+      <div>
+        <span class="display-bold">The Study (coming soon)</span>
+      </div>
+    </h1>
+  </Hero>
+</Layout>
