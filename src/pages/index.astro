@@ -2,23 +2,20 @@
 import Layout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
 
-import homePosterImg from "../assets/videos/home-poster.jpg";
-import homeVideoMp4 from "../assets/videos/home-optimized.mp4";
-import homeVideoWebm from "../assets/videos/home-optimized.webm";
+import theNutrientsImg from "../assets/images/the-nutrients.jpg";
+import theStudyImg from "../assets/images/the-books.png";
+import theGymImg from "../assets/images/the-gym.jpg";
+import heroPosterImg from "../assets/videos/hero-poster.jpg";
 ---
 
 <Layout
   title="The Roost — A community development program in Donley County, TX"
   bodyClass="overflow-hidden"
 >
-  <Hero
-    poster={homePosterImg}
-    videoWebm={homeVideoWebm}
-    videoMp4={homeVideoMp4}
-  >
+  <Hero poster={[theStudyImg, theGymImg, heroPosterImg, theNutrientsImg]}>
     <h1 class="flex items-center text-center display m-0 text-light">
       <div>
-        <span class="display-bold">Your kid has</span>
+        <span class="display-bold">Your life has</span>
         <span class="relative inline-block">
           <span class="display-italic">more</span>
           <svg
@@ -33,7 +30,7 @@ import homeVideoWebm from "../assets/videos/home-optimized.webm";
               fill="none"></path>
           </svg>
         </span>
-        <span class="display-bold"> in them.</span>
+        <span class="display-bold"> in it.</span>
       </div>
     </h1>
   </Hero>

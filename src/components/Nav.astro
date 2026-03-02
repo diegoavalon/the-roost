@@ -3,10 +3,10 @@ import { Image } from "astro:assets";
 import { TRACKS, CONTACT } from "../constants/navigation";
 
 // Track images
-import matImg from "../assets/images/wrestling-1.jpg";
-import ironImg from "../assets/images/wrestling-2.jpg";
-import plateImg from "../assets/images/wrestling-3.jpg";
-import deskImg from "../assets/images/wrestling-4.jpg";
+import theNutrientsImg from "../assets/images/the-nutrients.jpg";
+import theStudyImg from "../assets/images/the-books.png";
+import theGymImg from "../assets/images/the-gym.jpg";
+import heroPosterImg from "../assets/videos/hero-poster.jpg";
 
 interface Props {
   contactHref?: string;
@@ -15,19 +15,23 @@ interface Props {
 const { contactHref = CONTACT.whatsapp } = Astro.props;
 
 // Combine track data with images
-const trackImages = [matImg, ironImg, plateImg, deskImg];
+const trackImages = [heroPosterImg, theGymImg, theNutrientsImg, theStudyImg];
 const tracks = TRACKS.map((track, i) => ({ ...track, image: trackImages[i] }));
 ---
 
 <nav class="nav">
-  <!-- Programs dropdown -->
+  <!-- Programs dropdown (desktop) -->
   <div class="dropdown">
-    <button class="nav-link nav-link--work dropdown-trigger">
-      <span>Tracks</span>
+    <button
+      class="nav-link nav-link--work dropdown-trigger"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      <span class="font-black">Tracks</span>
       <svg
         class="dropdown-arrow"
-        width="12"
-        height="12"
+        width="24"
+        height="24"
         viewBox="0 0 12 12"
         fill="none"
       >
@@ -58,11 +62,7 @@ const tracks = TRACKS.map((track, i) => ({ ...track, image: trackImages[i] }));
         {
           tracks.map((track, index) => (
             <div class="preview-image" data-preview={index}>
-              <Image
-                src={track.image}
-                alt={track.label}
-                class="preview-img"
-              />
+              <Image src={track.image} alt={track.label} class="preview-img" />
               <div class="preview-info">
                 <span class="preview-name">{track.label}</span>
                 <span class="preview-desc">{track.description}</span>
@@ -109,14 +109,77 @@ const tracks = TRACKS.map((track, i) => ({ ...track, image: trackImages[i] }));
     </svg>
   </a>
 
-  <a href={contactHref} class="nav-link nav-link--social" aria-label="WhatsApp">
+  <!-- Contact link (desktop) -->
+  <a
+    href={contactHref}
+    class="nav-link nav-link--social nav-contact"
+    aria-label="WhatsApp"
+  >
     <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
       <path
         d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
       ></path>
     </svg>
   </a>
+
+  <!-- Hamburger button (mobile only) -->
+  <button
+    class="nav-hamburger"
+    id="nav-hamburger"
+    aria-label="Open menu"
+    aria-expanded="false"
+    aria-controls="mobile-menu"
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 </nav>
+
+<!-- Mobile menu overlay -->
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <div class="mobile-menu-inner">
+    <button
+      class="mobile-menu-close"
+      id="mobile-menu-close"
+      aria-label="Close menu"
+    >
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      >
+        <path d="M18 6L6 18M6 6l12 12"></path>
+      </svg>
+    </button>
+
+    <nav class="mobile-menu-nav">
+      <span class="mobile-menu-label">Tracks</span>
+      {
+        tracks.map((track) => (
+          <a href={track.href} class="mobile-menu-item">
+            {track.label}
+          </a>
+        ))
+      }
+
+      <hr class="mobile-menu-divider" />
+
+      <a href={contactHref} class="mobile-menu-contact">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+          <path
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+          ></path>
+        </svg>
+        Contact via WhatsApp
+      </a>
+    </nav>
+  </div>
+</div>
 
 <style>
   .nav {
@@ -177,7 +240,8 @@ const tracks = TRACKS.map((track, i) => ({ ...track, image: trackImages[i] }));
     transition: transform 0.2s ease;
   }
 
-  .dropdown:hover .dropdown-arrow {
+  .dropdown:hover .dropdown-arrow,
+  .dropdown.is-open .dropdown-arrow {
     transform: rotate(180deg);
   }
 
@@ -205,7 +269,8 @@ const tracks = TRACKS.map((track, i) => ({ ...track, image: trackImages[i] }));
       0 2px 4px -2px rgba(0, 0, 0, 0.1);
   }
 
-  .dropdown:hover .dropdown-content {
+  .dropdown:hover .dropdown-content,
+  .dropdown.is-open .dropdown-content {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -213,12 +278,13 @@ const tracks = TRACKS.map((track, i) => ({ ...track, image: trackImages[i] }));
 
   .dropdown-label {
     display: block;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--color-orange);
     margin-bottom: 1rem;
-    font-weight: 500;
+    font-weight: 700;
   }
 
   .dropdown-list {
@@ -289,34 +355,238 @@ const tracks = TRACKS.map((track, i) => ({ ...track, image: trackImages[i] }));
     opacity: 0.8;
   }
 
-  /* Mobile: hide dropdown, show simple link */
+  /* Hamburger button */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25em;
+    width: 2em;
+    height: 2em;
+  }
+
+  .nav-hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--color-light);
+    border-radius: 2px;
+    transition:
+      transform 0.25s ease,
+      opacity 0.25s ease;
+    transform-origin: center;
+  }
+
+  .nav-hamburger.is-open span:first-child {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .nav-hamburger.is-open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav-hamburger.is-open span:last-child {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Mobile menu overlay */
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: var(--color-dark);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+
+  .mobile-menu.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobile-menu-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: var(--spacing-container-m);
+  }
+
+  .mobile-menu-close {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-light);
+    padding: 0.25em;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+  }
+
+  .mobile-menu-close:hover {
+    opacity: 1;
+  }
+
+  .mobile-menu-nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    gap: 0;
+  }
+
+  .mobile-menu-label {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-orange);
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+  }
+
+  .mobile-menu-item {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 8vw, 3rem);
+    font-weight: 900;
+    color: var(--color-light);
+    text-decoration: none;
+    line-height: 1.1;
+    padding: 0.2em 0;
+    transition: color 0.2s ease;
+  }
+
+  .mobile-menu-item:hover {
+    color: var(--color-orange);
+  }
+
+  .mobile-menu-divider {
+    border: none;
+    border-top: 1px solid rgba(240, 235, 230, 0.15);
+    margin: 2rem 0;
+  }
+
+  .mobile-menu-contact {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    font-family: var(--font-sans);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-light);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+  }
+
+  .mobile-menu-contact:hover {
+    opacity: 1;
+  }
+
+  /* Responsive: show hamburger, hide desktop items */
   @media (max-width: 767px) {
-    .dropdown-content {
+    .nav {
+      align-items: center;
+      padding: 0.5rem 1rem;
+    }
+    .nav-logo svg {
+      width: 112px;
+    }
+    .mobile-menu-close {
+      position: absolute;
+      top: 1.675rem;
+      right: 1rem;
+    }
+    .dropdown,
+    .nav-contact {
       display: none;
     }
 
-    .dropdown-arrow {
-      display: none;
+    .nav-hamburger {
+      display: flex;
     }
   }
 </style>
 
 <script>
+  // ── Dropdown: preview image on hover ──
   const dropdownItems = document.querySelectorAll(".dropdown-item");
   const previewImages = document.querySelectorAll(".preview-image");
 
   dropdownItems.forEach((item) => {
     item.addEventListener("mouseenter", () => {
       const index = item.getAttribute("data-index");
-
-      // Remove active from all
       previewImages.forEach((img) => img.classList.remove("active"));
-
-      // Add active to matching preview
       const target = document.querySelector(`[data-preview="${index}"]`);
-      if (target) {
-        target.classList.add("active");
-      }
+      if (target) target.classList.add("active");
     });
+  });
+
+  // ── Dropdown: touch support ──
+  const dropdown = document.querySelector(".dropdown") as HTMLElement | null;
+  const dropdownTrigger = document.querySelector(
+    ".dropdown-trigger",
+  ) as HTMLButtonElement | null;
+
+  dropdownTrigger?.addEventListener(
+    "touchstart",
+    (e) => {
+      e.preventDefault();
+      const isOpen = dropdown?.classList.toggle("is-open");
+      if (dropdownTrigger) {
+        dropdownTrigger.setAttribute("aria-expanded", String(isOpen));
+      }
+    },
+    { passive: false },
+  );
+
+  document.addEventListener(
+    "touchstart",
+    (e) => {
+      if (dropdown && !dropdown.contains(e.target as Node)) {
+        dropdown.classList.remove("is-open");
+        dropdownTrigger?.setAttribute("aria-expanded", "false");
+      }
+    },
+    { passive: true },
+  );
+
+  // ── Mobile menu ──
+  const hamburger = document.getElementById(
+    "nav-hamburger",
+  ) as HTMLButtonElement | null;
+  const mobileMenu = document.getElementById(
+    "mobile-menu",
+  ) as HTMLElement | null;
+  const mobileClose = document.getElementById(
+    "mobile-menu-close",
+  ) as HTMLButtonElement | null;
+
+  function openMenu() {
+    mobileMenu?.classList.add("is-open");
+    mobileMenu?.setAttribute("aria-hidden", "false");
+    hamburger?.classList.add("is-open");
+    hamburger?.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeMenu() {
+    mobileMenu?.classList.remove("is-open");
+    mobileMenu?.setAttribute("aria-hidden", "true");
+    hamburger?.classList.remove("is-open");
+    hamburger?.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  }
+
+  hamburger?.addEventListener("click", openMenu);
+  mobileClose?.addEventListener("click", closeMenu);
+
+  // Close when a nav link inside the menu is tapped
+  mobileMenu?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", closeMenu);
   });
 </script>

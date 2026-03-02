@@ -12,9 +12,9 @@ interface Props {
 
 const {
   headline = "Ready to Step on the Mat?",
-  description = "Signing up takes 30 seconds. Just tell us your name, your wrestler's age, and which program you're interested in. We'll handle the rest.",
+  description = "Just tell us your name, your wrestler's age, and which program you're interested in. We'll handle the rest.",
   buttonText = "Contact Us to Register",
-  buttonHref = "#contact",
+  buttonHref = "/contact",
   backgroundImage,
 } = Astro.props;
 ---
@@ -41,7 +41,9 @@ const {
 
   <!-- Content -->
   <div class="relative z-[1] text-center max-w-[40em] text-light">
-    <h2 class="display-bold text-[clamp(2rem,7vw,4rem)] leading-tight m-0 mb-6">
+    <h2
+      class="display display-bold text-[clamp(2rem,7vw,4rem)] leading-tight m-0 mb-1"
+    >
       {headline}
     </h2>
     {

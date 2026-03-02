@@ -1,5 +1,466 @@
 ---
 import Layout from "../layouts/Layout.astro";
+
+// Turnstile site key - replace with your key from Cloudflare dashboard
+const TURNSTILE_SITE_KEY =
+  import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "1x00000000000000000000AA"; // Test key for development
+
+const programFocus = [
+  {
+    value: "the-mat",
+    label: "The Mat",
+    description: "Wrestling & Character Development",
+  },
+  {
+    value: "the-iron",
+    label: "The Iron",
+    description: "Physical Fitness & Weight Management",
+  },
+  {
+    value: "the-table",
+    label: "The Table",
+    description: "Nutrition, Meal Planning & Supplements",
+  },
+  {
+    value: "the-desk",
+    label: "The Desk",
+    description: "Academic Prep & College Readiness",
+  },
+  { value: "unsure", label: "Not sure yet", description: "I need guidance" },
+];
+
+const referralSources = [
+  { value: "", label: "Select an option" },
+  { value: "community-partner", label: "Community Partner" },
+  { value: "friend-family", label: "Friend / Family" },
+  { value: "social-media", label: "Social Media" },
+  { value: "online-search", label: "Online Search" },
+  { value: "other", label: "Other" },
+];
+
+const inputClasses =
+  "w-full px-4 py-3 bg-light/50 border border-dark/20 rounded-sm text-base placeholder:text-dark/40 focus:outline-none focus:border-dark transition-colors";
+const labelClasses =
+  "block text-xs uppercase tracking-wider font-semibold mb-2";
+const selectClasses =
+  "w-full px-4 py-3 bg-light/50 border border-dark/20 rounded-sm text-base text-dark/60 focus:outline-none focus:border-dark cursor-pointer appearance-none transition-colors";
 ---
 
-<Layout />hello
+<Layout title="Contact" bodyClass="dark-nav">
+  <main class="min-h-screen bg-orange">
+    <!-- Header Section -->
+    <section class="pt-section pb-12 px-container-m text-center">
+      <!-- Section Label -->
+      <div class="flex items-center justify-center gap-2 mb-6">
+        <span class="w-2 h-2 rounded-full bg-green"></span>
+        <span class="text-xs uppercase tracking-widest font-semibold"
+          >Contact</span
+        >
+      </div>
+
+      <!-- Headline -->
+      <h1 class="display max-w-[14em] mx-auto mb-2">Ready to Close the Gap?</h1>
+
+      <!-- Subtext -->
+      <p class="text-lg max-w-[36em] mx-auto text-dark/80 mb-2">
+        From where you are to where you're capable of being. Let's start the
+        conversation.
+      </p>
+    </section>
+
+    <!-- Form Section -->
+    <section class="pb-section px-container-m">
+      <div class="max-w-[42em] mx-auto">
+        <form id="contact-form" class="bg-[#e8e4dc] rounded-lg p-10 max-sm:p-6">
+          <!-- Full Name -->
+          <div class="mb-6">
+            <label for="name" class={labelClasses}>
+              Full Name <span class="text-maroonred">*</span>
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Your full name"
+              required
+              minlength="2"
+              maxlength="100"
+              class={inputClasses}
+            />
+            <p class="form-error text-xs text-maroonred mt-1 hidden"></p>
+          </div>
+
+          <!-- Email + Phone Row -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <label for="email" class={labelClasses}>
+                Email Address <span class="text-maroonred">*</span>
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="your@email.com"
+                required
+                class={inputClasses}
+              />
+              <p class="form-error text-xs text-maroonred mt-1 hidden"></p>
+            </div>
+            <div>
+              <label for="phone" class={labelClasses}>
+                Phone Number <span class="text-dark/40 font-normal normal-case"
+                  >(recommended)</span
+                >
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="(555) 123-4567"
+                maxlength="14"
+                pattern="\(\d{3}\)\s?\d{3}-\d{4}"
+                class={inputClasses}
+              />
+              <p class="form-error text-xs text-maroonred mt-1 hidden"></p>
+            </div>
+          </div>
+
+          <!-- Age -->
+          <div class="mb-8">
+            <label for="age" class={labelClasses}>
+              Age of Participant <span class="text-maroonred">*</span>
+            </label>
+            <input
+              type="number"
+              id="age"
+              name="age"
+              placeholder="Age"
+              min="5"
+              max="99"
+              required
+              class={`${inputClasses} max-w-[8em]`}
+            />
+            <p class="form-error text-xs text-maroonred mt-1 hidden"></p>
+          </div>
+
+          <!-- Divider -->
+          <hr class="border-dark/10 mb-8" />
+
+          <!-- Find Your Why (Program Focus) -->
+          <fieldset class="mb-8" id="program-focus-group">
+            <legend class={`${labelClasses} mb-1`}>
+              Step 1: Find Your Why <span class="text-maroonred">*</span>
+            </legend>
+            <p class="text-sm text-dark/60 mb-4">
+              I'm interested in closing my gap primarily through:
+            </p>
+            <div class="space-y-3">
+              {
+                programFocus.map((program) => (
+                  <label class="flex items-start gap-3 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      name="program_focus"
+                      value={program.value}
+                      class="mt-1 w-4 h-4 rounded-sm border-dark/30 text-dark focus:ring-dark/20 cursor-pointer"
+                    />
+                    <span class="flex-1">
+                      <span class="font-semibold text-dark group-hover:text-dark/80 transition-colors">
+                        {program.label}
+                      </span>
+                      <span class="text-dark/60 ml-1">
+                        — {program.description}
+                      </span>
+                    </span>
+                  </label>
+                ))
+              }
+            </div>
+            <p class="form-error text-xs text-maroonred mt-2 hidden" id="program-focus-error"></p>
+          </fieldset>
+
+          <!-- Define Your What (Goal) -->
+          <div class="mb-8">
+            <label for="goal" class={`${labelClasses} mb-1`}>
+              Step 2: Define Your What <span class="text-maroonred">*</span>
+            </label>
+            <p class="text-sm text-dark/60 mb-4">
+              Tell us about your gap. What is the one big, measurable thing you
+              want to achieve?
+            </p>
+            <textarea
+              id="goal"
+              name="goal"
+              placeholder="I want to be alive to walk my daughter down the aisle."
+              rows="3"
+              required
+              minlength="10"
+              maxlength="1000"
+              class={`${inputClasses} resize-none`}></textarea>
+            <p class="text-xs text-dark/40 mt-2 italic">
+              Examples: I want to feel strong again; I want my son to gain
+              confidence; I want to go to West Texas A&M; I want to lose 30
+              pounds.
+            </p>
+            <p class="form-error text-xs text-maroonred mt-1 hidden"></p>
+          </div>
+
+          <!-- Divider -->
+          <hr class="border-dark/10 mb-8" />
+
+          <!-- How did you hear about us -->
+          <div class="mb-10">
+            <label for="referral" class={labelClasses}>
+              How did you hear about The Roost?
+            </label>
+            <select
+              id="referral"
+              name="referral"
+              class={selectClasses}
+              style="background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23666%22 stroke-width=%222%22%3E%3Cpath d=%22M6 9l6 6 6-6%22/%3E%3C/svg%3E'); background-repeat: no-repeat; background-position: right 1rem center;"
+            >
+              {
+                referralSources.map((source) => (
+                  <option value={source.value}>{source.label}</option>
+                ))
+              }
+            </select>
+          </div>
+
+          <!-- Turnstile Widget -->
+          <div class="mb-6">
+            <div
+              class="cf-turnstile"
+              data-sitekey={TURNSTILE_SITE_KEY}
+              data-theme="light"
+            >
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="inline-flex items-center gap-2 py-4 px-8 bg-dark text-light text-sm font-bold uppercase tracking-wider rounded-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
+          >
+            <span>Start My Transformation</span>
+            <svg
+              class="w-4 h-4 transition-transform duration-200"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<!-- Cloudflare Turnstile -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer
+></script>
+
+<script>
+  // Turnstile type declaration
+  declare global {
+    interface Window {
+      turnstile?: {
+        reset: (container?: string | HTMLElement) => void;
+      };
+    }
+  }
+
+  const form = document.getElementById("contact-form") as HTMLFormElement;
+  const submitBtn = form?.querySelector(
+    'button[type="submit"]',
+  ) as HTMLButtonElement;
+  const phoneInput = document.getElementById("phone") as HTMLInputElement;
+  const ageInput = document.getElementById("age") as HTMLInputElement;
+
+  ageInput?.addEventListener("input", () => {
+    if (ageInput.value.length > 2) {
+      ageInput.value = ageInput.value.slice(0, 2);
+    }
+  });
+
+  // Phone number formatting: (555) 123-4567
+  function formatPhoneNumber(value: string): string {
+    const digits = value.replace(/\D/g, "").slice(0, 10);
+    if (digits.length === 0) return "";
+    if (digits.length <= 3) return `(${digits}`;
+    if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+  }
+
+  phoneInput?.addEventListener("input", (e) => {
+    const input = e.target as HTMLInputElement;
+    const cursorPos = input.selectionStart || 0;
+    const oldLength = input.value.length;
+    input.value = formatPhoneNumber(input.value);
+    // Adjust cursor position after formatting
+    const newLength = input.value.length;
+    const diff = newLength - oldLength;
+    input.setSelectionRange(cursorPos + diff, cursorPos + diff);
+  });
+
+  // Show error for a field
+  function showError(input: HTMLElement, message: string) {
+    const errorEl = input.parentElement?.querySelector(".form-error") as HTMLElement;
+    if (errorEl) {
+      errorEl.textContent = message;
+      errorEl.classList.remove("hidden");
+    }
+    input.classList.add("!border-maroonred");
+  }
+
+  // Clear error for a field
+  function clearError(input: HTMLElement) {
+    const errorEl = input.parentElement?.querySelector(".form-error") as HTMLElement;
+    if (errorEl) {
+      errorEl.classList.add("hidden");
+    }
+    input.classList.remove("!border-maroonred");
+  }
+
+  // Clear all errors
+  function clearAllErrors() {
+    form.querySelectorAll(".form-error").forEach((el) => el.classList.add("hidden"));
+    form.querySelectorAll(".\\!border-maroonred").forEach((el) => el.classList.remove("!border-maroonred"));
+  }
+
+  // Validate form
+  function validateForm(): boolean {
+    clearAllErrors();
+    let isValid = true;
+
+    // Name validation
+    const nameInput = form.querySelector("#name") as HTMLInputElement;
+    if (!nameInput.value.trim() || nameInput.value.trim().length < 2) {
+      showError(nameInput, "Please enter your full name (at least 2 characters)");
+      isValid = false;
+    }
+
+    // Email validation
+    const emailInput = form.querySelector("#email") as HTMLInputElement;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailInput.value)) {
+      showError(emailInput, "Please enter a valid email address");
+      isValid = false;
+    }
+
+    // Phone validation (optional but must be valid if provided)
+    if (phoneInput.value) {
+      const digits = phoneInput.value.replace(/\D/g, "");
+      if (digits.length !== 10) {
+        showError(phoneInput, "Please enter a valid 10-digit phone number");
+        isValid = false;
+      }
+    }
+
+    // Age validation
+    const age = parseInt(ageInput.value, 10);
+    if (isNaN(age) || age < 5 || age > 99) {
+      showError(ageInput, "Please enter an age between 5 and 99");
+      isValid = false;
+    }
+
+    // Program focus validation (at least one checkbox)
+    const checkboxes = form.querySelectorAll('input[name="program_focus"]:checked');
+    const programError = document.getElementById("program-focus-error");
+    if (checkboxes.length === 0) {
+      if (programError) {
+        programError.textContent = "Please select at least one program";
+        programError.classList.remove("hidden");
+      }
+      isValid = false;
+    }
+
+    // Goal validation
+    const goalInput = form.querySelector("#goal") as HTMLTextAreaElement;
+    if (!goalInput.value.trim() || goalInput.value.trim().length < 10) {
+      showError(goalInput, "Please describe your goal (at least 10 characters)");
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  // Clear errors on input
+  form.querySelectorAll("input, textarea, select").forEach((input) => {
+    input.addEventListener("input", () => clearError(input as HTMLElement));
+  });
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Validate form
+    if (!validateForm()) {
+      return;
+    }
+
+    const formData = new FormData(form);
+
+    // Get Turnstile token
+    const turnstileResponse = formData.get("cf-turnstile-response");
+    if (!turnstileResponse) {
+      alert("Please complete the security check");
+      return;
+    }
+
+    // Handle checkboxes (multiple values)
+    const programFocus = formData.getAll("program_focus");
+
+    // Build data object
+    const data: Record<string, unknown> = {};
+    formData.forEach((value, key) => {
+      if (key !== "program_focus") {
+        data[key] = value;
+      }
+    });
+    data.program_focus = programFocus;
+
+    // Disable button during submission
+    const originalText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = "<span>Sending...</span>";
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        submitBtn.innerHTML = "<span>Message Sent!</span>";
+        form.reset();
+        // Reset Turnstile widget
+        if (window.turnstile) {
+          window.turnstile.reset();
+        }
+        setTimeout(() => {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+        }, 3000);
+      } else {
+        throw new Error(result.error || "Failed to send");
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      submitBtn.innerHTML = "<span>Error - Try Again</span>";
+      // Reset Turnstile on error
+      if (window.turnstile) {
+        window.turnstile.reset();
+      }
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }, 3000);
+    }
+  });
+</script>

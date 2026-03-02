@@ -100,13 +100,14 @@
   --spacing-48: 12em;
   --spacing-60: 15em;
 
-  /* Named Spacing Tokens */
-  --spacing-container-s: 0.75em;
-  --spacing-container-m: 2.5em;
-  --spacing-container-l: 6.75em;
-  --spacing-container-xl: 10.625em;
-  --spacing-gap: 2.5em;
-  --spacing-section: 12em;
+  /* Named Spacing Tokens — fluid via clamp(min, fluid, max)
+     Scales smoothly from ~375px (mobile) to ~1440px (desktop) */
+  --spacing-container-s: clamp(0.5rem, 1.5vw, 0.75rem);
+  --spacing-container-m: clamp(1rem, 4vw, 2.5rem);
+  --spacing-container-l: clamp(1.5rem, 7.5vw, 6.75rem);
+  --spacing-container-xl: clamp(1.5rem, 11.8vw, 10.625rem);
+  --spacing-gap: clamp(1rem, 4vw, 2.5rem);
+  --spacing-section: clamp(3rem, 13.5vw, 12rem);
 
   /* ─────────────────────────────────────────────────────────────────────────
      BORDER RADIUS
@@ -204,7 +205,7 @@
   }
 
   p {
-    @apply text-lg;
+    @apply text-base md:text-lg;
     line-height: 1.4;
   }
 
@@ -238,4 +239,10 @@
     background: rgba(240, 235, 230, 0.15);
     backdrop-filter: blur(var(--blur-control));
   }
+}
+
+.dark-nav .nav-logo,
+.dark-nav .nav-link,
+.dark-nav .dropdown {
+  @apply !text-dark;
 }
