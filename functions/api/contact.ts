@@ -25,9 +25,9 @@ interface TurnstileResponse {
 
 const programLabels: Record<string, string> = {
   "the-mat": "The Mat — Wrestling & Character Development",
-  "the-iron": "The Iron — Physical Fitness & Weight Management",
-  "the-table": "The Table — Nutrition, Meal Planning & Supplements",
-  "the-desk": "The Desk — Academic Prep & College Readiness",
+  "the-gym": "The Gym — Physical Fitness & Weight Management",
+  "the-nutrients": "The Nutrients — Nutrition, Meal Planning & Supplements",
+  "the-study": "The Study — Academic Prep & College Readiness",
   unsure: "Not sure yet — Needs guidance",
 };
 
@@ -166,7 +166,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
           <hr style="margin-top: 32px; border: none; border-top: 1px solid #ddd;" />
           <p style="color: #999; font-size: 12px;">
-            This message was sent from the registration form at theroostwc.com
+            This message was sent from the registration form at roostacademy.org
           </p>
         </div>
       `,

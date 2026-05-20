@@ -1,0 +1,95 @@
+---
+interface Props {
+  id: string;
+  message: string;
+  href?: string;
+  ctaLabel?: string;
+  dismissible?: boolean;
+}
+
+const { id, message, href, ctaLabel, dismissible = false } = Astro.props;
+---
+
+<aside
+  data-announcement
+  data-announcement-id={id}
+  class="announcement-banner w-full bg-green text-light border-b border-light/20"
+>
+  <div
+    class="px-container-m py-3 text-sm md:text-base flex items-center justify-center gap-3 text-center"
+  >
+    <p class="m-0 text-light">{message}</p>
+    {
+      href && ctaLabel && (
+        <a
+          href={href}
+          class="inline-flex items-center gap-1 font-bold underline underline-offset-4 hover:opacity-80 transition-opacity"
+        >
+          {ctaLabel}
+          <span aria-hidden="true">-&gt;</span>
+        </a>
+      )
+    }
+    {
+      dismissible && (
+        <button
+          type="button"
+          class="announcement-dismiss inline-flex items-center justify-center w-7 h-7 rounded-full border border-light/50 text-light hover:bg-light/15 transition-colors"
+          aria-label="Dismiss announcement"
+        >
+          X
+        </button>
+      )
+    }
+  </div>
+</aside>
+
+<script>
+  const root = document.documentElement;
+  const banner = document.querySelector("[data-announcement]") as HTMLElement | null;
+
+  const setOffset = () => {
+    const height = banner && banner.style.display !== "none" ? banner.offsetHeight : 0;
+    root.style.setProperty("--announcement-offset", `${height}px`);
+  };
+
+  if (banner) {
+    const announcementId = banner.dataset.announcementId || "global-announcement";
+    const dismissKey = `announcement:dismissed:${announcementId}`;
+    const dismissButton = banner.querySelector(
+      ".announcement-dismiss",
+    ) as HTMLButtonElement | null;
+
+    if (dismissButton && localStorage.getItem(dismissKey) === "1") {
+      banner.style.display = "none";
+    }
+
+    dismissButton?.addEventListener("click", () => {
+      localStorage.setItem(dismissKey, "1");
+      banner.style.display = "none";
+      setOffset();
+    });
+
+    setOffset();
+    window.addEventListener("resize", setOffset);
+  }
+</script>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    .announcement-banner {
+      animation: announcement-enter 480ms cubic-bezier(0.22, 1, 0.36, 1) 80ms both;
+    }
+  }
+
+  @keyframes announcement-enter {
+    from {
+      opacity: 0;
+      transform: translateY(-0.45rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

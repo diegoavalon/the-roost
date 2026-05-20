@@ -60,7 +60,7 @@ export const PROGRAM_DETAILS = {
 } as const;
 
 export const CONNECT_LINKS: NavLink[] = [
-  { label: "Contact Us", href: "#contact" },
+  { label: "Contact Us", href: "/contact" },
   { label: "Facebook", href: "#" },
   { label: "Instagram", href: "#" },
 ];
@@ -77,6 +77,6 @@ export const NAV_COLUMNS: NavColumn[] = [
 ];
 
 export const CONTACT = {
-  email: "info@theroostwrestling.org",
+  email: "info@roostacademy.org",
   whatsapp: "https://wa.me/",
 };

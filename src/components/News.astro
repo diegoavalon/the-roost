@@ -1,0 +1,125 @@
+---
+interface Service {
+  id: string;
+  title: string;
+  description: string;
+}
+
+interface Props {
+  services?: Service[];
+}
+
+const defaultServices: Service[] = [
+  {
+    id: "01",
+    title: "Design",
+    description:
+      "Through compelling design and powerful imagery, we help your brand tell a story that resonates and leaves a lasting impression.",
+  },
+  {
+    id: "02",
+    title: "Development",
+    description:
+      "We focus on intuitive layouts and thoughtful interactions that prioritize the user's journey, ensuring your website is both beautiful and functional.",
+  },
+  {
+    id: "03",
+    title: "Marketing",
+    description:
+      "Our strategic campaigns are built to cut through the noise, helping you reach the right audience and grow with confidence.",
+  },
+];
+
+const { services = defaultServices } = Astro.props;
+---
+
+<section class="bg-light pt-section pb-16" data-services-carousel>
+  <div class="px-container-m mb-12 flex items-end justify-between gap-8 max-md:mb-8">
+    <div>
+      <span class="text-xs uppercase tracking-widest font-semibold block mb-6"
+        >(Services)</span
+      >
+      <h2 class="display max-w-[10ch] m-0">Solving all kinds of problems</h2>
+    </div>
+
+    <div class="flex items-center gap-2 self-center max-md:self-end">
+      <button
+        type="button"
+        class="services-nav w-11 h-11 rounded-full bg-dark/5 text-dark/30 flex items-center justify-center transition-colors hover:bg-dark/10 hover:text-dark disabled:opacity-40 disabled:cursor-not-allowed"
+        aria-label="Scroll to previous service"
+        data-dir="prev"
+      >
+        <svg
+          class="w-5 h-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M15 18l-6-6 6-6"></path>
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="services-nav w-11 h-11 rounded-full bg-light text-dark flex items-center justify-center transition-colors hover:bg-dark/10"
+        aria-label="Scroll to next service"
+        data-dir="next"
+      >
+        <svg
+          class="w-5 h-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M9 18l6-6-6-6"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="px-container-m">
+    <div
+      class="services-track flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+    >
+      {
+        services.map((service) => (
+          <article class="flex-none w-[min(88vw,27.5em)] min-h-[26em] bg-offwhite p-12 max-md:p-8 snap-start flex flex-col">
+            <span class="text-xs font-semibold tracking-wider">({service.id})</span>
+            <h3 class="text-[clamp(2rem,4.8vw,3.25rem)] mt-6 mb-10">{service.title}</h3>
+            <p class="text-dark/90 mt-auto max-w-[22ch]">{service.description}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  const carousels = document.querySelectorAll("[data-services-carousel]");
+
+  carousels.forEach((carousel) => {
+    const track = carousel.querySelector(".services-track") as HTMLElement | null;
+    const prev = carousel.querySelector(
+      '.services-nav[data-dir="prev"]',
+    ) as HTMLButtonElement | null;
+    const next = carousel.querySelector(
+      '.services-nav[data-dir="next"]',
+    ) as HTMLButtonElement | null;
+
+    if (!track || !prev || !next) return;
+
+    const scrollAmount = () => {
+      const card = track.querySelector("article") as HTMLElement | null;
+      return card ? card.offsetWidth + 24 : 420;
+    };
+
+    prev.addEventListener("click", () => {
+      track.scrollBy({ left: -scrollAmount(), behavior: "smooth" });
+    });
+
+    next.addEventListener("click", () => {
+      track.scrollBy({ left: scrollAmount(), behavior: "smooth" });
+    });
+  });
+</script>

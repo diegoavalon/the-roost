@@ -10,16 +10,17 @@ import heroPosterImg from "../assets/videos/hero-poster.jpg";
 
 interface Props {
   contactHref?: string;
+  offsetTop?: string;
 }
 
-const { contactHref = CONTACT.whatsapp } = Astro.props;
+const { contactHref = CONTACT.whatsapp, offsetTop = "0px" } = Astro.props;
 
 // Combine track data with images
 const trackImages = [heroPosterImg, theGymImg, theNutrientsImg, theStudyImg];
 const tracks = TRACKS.map((track, i) => ({ ...track, image: trackImages[i] }));
 ---
 
-<nav class="nav">
+<nav class="nav" style={`--nav-top: ${offsetTop};`}>
   <!-- Programs dropdown (desktop) -->
   <div class="dropdown">
     <button
@@ -184,7 +185,7 @@ const tracks = TRACKS.map((track, i) => ({ ...track, image: trackImages[i] }));
 <style>
   .nav {
     position: absolute;
-    top: 0;
+    top: var(--nav-top, 0px);
     left: 0;
     right: 0;
     z-index: 10;

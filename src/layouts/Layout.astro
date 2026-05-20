@@ -4,6 +4,8 @@ import { Font } from "astro:assets";
 
 import Footer from "../components/Footer.astro";
 import Nav from "../components/Nav.astro";
+import AnnouncementBanner from "../components/AnnouncementBanner.astro";
+import { GLOBAL_ANNOUNCEMENT } from "../constants/announcement";
 
 interface Props {
   title?: string;
@@ -11,6 +13,10 @@ interface Props {
 }
 
 const { title = "Roost", bodyClass } = Astro.props;
+const showAnnouncement = GLOBAL_ANNOUNCEMENT.enabled;
+const navOffset = showAnnouncement
+  ? "var(--announcement-offset, 3rem)"
+  : "0px";
 ---
 
 <!doctype html>
@@ -27,9 +33,27 @@ const { title = "Roost", bodyClass } = Astro.props;
     <Font cssVariable="--astro-font-sans" preload />
     <Font cssVariable="--astro-font-display" preload />
     <Font cssVariable="--astro-font-serif" preload />
+
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
   </head>
   <body class={bodyClass}>
-    <Nav />
+    {
+      showAnnouncement && (
+        <AnnouncementBanner
+          id={GLOBAL_ANNOUNCEMENT.id}
+          message={GLOBAL_ANNOUNCEMENT.message}
+          href={GLOBAL_ANNOUNCEMENT.href}
+          ctaLabel={GLOBAL_ANNOUNCEMENT.ctaLabel}
+          dismissible={GLOBAL_ANNOUNCEMENT.dismissible}
+        />
+      )
+    }
+
+    <Nav offsetTop={navOffset} />
 
     <slot />
 

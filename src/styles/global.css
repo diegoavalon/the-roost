@@ -5,6 +5,7 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 @theme {
+  --color-*: initial;
   /* ─────────────────────────────────────────────────────────────────────────
      TYPOGRAPHY — Font Families
      Astro experimental fonts injects optimized @font-face rules and sets
@@ -245,4 +246,16 @@
 .dark-nav .nav-link,
 .dark-nav .dropdown {
   @apply !text-dark;
+}
+
+/* Form input design */
+input,
+textarea,
+select,
+input[type="checkbox"] {
+  @apply bg-light;
+}
+
+button {
+  cursor: pointer;
 }

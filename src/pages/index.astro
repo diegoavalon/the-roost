@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
+import News from "../components/News.astro";
 
 import theNutrientsImg from "../assets/images/the-nutrients.jpg";
 import theStudyImg from "../assets/images/the-books.png";
@@ -10,7 +11,6 @@ import heroPosterImg from "../assets/videos/hero-poster.jpg";
 
 <Layout
   title="The Roost — A community development program in Donley County, TX"
-  bodyClass="overflow-hidden"
 >
   <Hero poster={[theStudyImg, theGymImg, heroPosterImg, theNutrientsImg]}>
     <h1 class="flex items-center text-center display m-0 text-light">
@@ -34,4 +34,5 @@ import heroPosterImg from "../assets/videos/hero-poster.jpg";
       </div>
     </h1>
   </Hero>
+  <News />
 </Layout>
