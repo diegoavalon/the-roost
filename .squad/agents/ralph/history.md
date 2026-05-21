@@ -1,0 +1,16 @@
+# Project Context
+
+- **Project:** roost-wc
+- **Created:** 2026-05-20
+
+## Core Context
+
+Agent Ralph initialized and ready for work.
+
+## Recent Updates
+
+📌 Team initialized on 2026-05-20
+
+## Learnings
+
+Initial setup complete.
